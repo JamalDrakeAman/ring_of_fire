@@ -3,12 +3,12 @@
     <div class="card-stack">
 
         @for (card of [0,1,2,3]; track card; let i = $index) {
-        <img [ngStyle]="{'right.px': i * 5}" src="./../../assets/playing_cards/card_cover.png" alt="">
+        <img [ngStyle]="{'right.px': i * 5}" src="./assets/playing_cards/card_cover.png" alt="">
         }
         <img (click)="takeCard()" class="top-card" style="right: 25px;"
-            src="./../../assets/playing_cards/card_cover.png" alt="">
+            src="./assets/playing_cards/card_cover.png" alt="">
         @if(pickCardAnimation){
-        <img (click)="takeCard()" class="pick-card" style="right: 25px;" src="./../../assets/playing_cards/ace_1.png"
+        <img (click)="takeCard()" class="pick-card" style="right: 25px;" src="./assets/playing_cards/ace_1.png"
             alt="">
         }
 
