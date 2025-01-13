@@ -1,5 +1,7 @@
+import { input } from "@angular/core";
+
 export class Game {
-    public players: string[] = [];
+    public players: string[] = ['Hans', 'Peter','Freddy'];
     public stack: string[] = [];
     public playedCards: string[] = [];
     public currentPlayer: number = 0;
@@ -14,6 +16,8 @@ export class Game {
         
         shuffle(this.stack);
     }
+
+    
     
 }
 
