@@ -3,9 +3,15 @@ import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game';
 import { PlayerComponent } from '../player/player.component';
 
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 
 
 @Component({
@@ -17,17 +23,23 @@ import {MatButtonModule} from '@angular/material/button';
 
     MatIconModule,
     MatDividerModule,
-    MatButtonModule
+    MatButtonModule,
+
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
+
+
 export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string | undefined = '';
   game: Game = new Game;
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
 
   ngOnInit(): void {
@@ -55,8 +67,34 @@ export class GameComponent implements OnInit {
         this.pickCardAnimation = false;
       }, 1000);
     }
+  }
+
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+
+    });
+
+
+
 
   }
-  
+
+  addPlayer(): void {
+    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
+    
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.game.players.push(result)
+    });
+  }
+
 
 }
+
+
+
