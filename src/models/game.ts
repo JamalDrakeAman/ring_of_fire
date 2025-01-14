@@ -6,7 +6,7 @@ export class Game {
     public playedCards: string[] = [];
     public currentPlayer: number = 0;
 
-    constructor() {
+    constructor() { // Hier werden die karten von jeder art in das array gepusht
         for (let i = 1; i < 14; i++) {
             this.stack.push('spade_' + i);
             this.stack.push('hearts_' + i);
@@ -17,7 +17,6 @@ export class Game {
         shuffle(this.stack);
     }
 
-    
     
 }
 
