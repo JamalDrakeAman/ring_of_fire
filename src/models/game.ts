@@ -1,7 +1,7 @@
 import { input } from "@angular/core";
 
 export class Game {
-    public players: string[] = ['Hans', 'Peter','Freddy'];
+    public players: string[] = [];
     public stack: string[] = [];
     public playedCards: string[] = [];
     public currentPlayer: number = 0;

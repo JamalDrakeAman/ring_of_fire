@@ -10,6 +10,10 @@ import { Component, Input } from '@angular/core';
 export class PlayerComponent {
 
   @Input()name = 'name';
+
+  @Input() playerActive:boolean = false;
+
+  constructor(){}
   
 
 }
