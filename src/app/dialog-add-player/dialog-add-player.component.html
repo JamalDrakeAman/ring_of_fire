@@ -6,7 +6,7 @@
         <input matInput [(ngModel)]="name" />
     </mat-form-field>
     <div>
-        <button mat-raised-button>No Thanks</button>
+        <button mat-raised-button (click)="onNoClick()">No Thanks</button>
         <button color="primary" mat-raised-button>Ok</button>
     </div>
 
