@@ -31,7 +31,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 
 
-export class DialogAddPlayerComponent implements OnInit {
+export class DialogAddPlayerComponent implements OnInit  {
   name: string = '';
 
   constructor() { }
