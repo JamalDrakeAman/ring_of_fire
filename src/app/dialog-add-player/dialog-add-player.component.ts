@@ -40,8 +40,4 @@ export class DialogAddPlayerComponent implements OnInit  {
 
   }
 
-  onNoClick(){
-
-  }
-
 }

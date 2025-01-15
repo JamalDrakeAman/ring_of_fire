@@ -75,23 +75,16 @@ export class GameComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.game.players.push(result);
+      if(result){
+        this.game.players.push(result);
+      }
     });
   }
 
-  onNoClick(): void {
-    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
-    dialogRef.close();
-  }
-
-  addPlayer(): void {
-    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
-    
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.game.players.push(result)
-    });
-  }
+  // onNoClick(): void {
+  //   const dialogRef = this.dialog.open(DialogAddPlayerComponent);
+  //   dialogRef.close();
+  // }
 
 
 }
