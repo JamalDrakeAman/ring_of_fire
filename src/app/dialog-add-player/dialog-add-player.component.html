@@ -7,7 +7,7 @@
     </mat-form-field>
     <div>
         <button mat-raised-button mat-dialog-close>No Thanks</button>
-        <button color="primary" [mat-dialog-close]="name" mat-raised-button>Ok</button>
+        <button [disabled]="name.length == 0" color="primary" [mat-dialog-close]="name" mat-raised-button>Ok</button>
     </div>
 
 </div>

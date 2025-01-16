@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './game-info.component.html',
   styleUrl: './game-info.component.scss'
 })
-export class GameInfoComponent {
+export class GameInfoComponent implements OnInit, OnChanges {
   cardAction = [
     { title: 'Waterfall', description: 'Everyone has to start drinking at the same time. As soon as player 1 stops drinking, player 2 may stop drinking. Player 3 may stop as soon as player 2 stops drinking, and so on.' },
     { title: 'You', description: 'You decide who drinks' },
@@ -29,6 +29,29 @@ export class GameInfoComponent {
 
   title: string = '';
   description: string = '';
+
+  @Input() card: string | undefined = '';
+
+  constructor() {
+
+  }
+
+  ngOnInit(): void {
+    console.log('Current card:', this.card);
+  }
+
+
+  // Eine funktion die wird immer aufgerufen wenn die input variable geändert wird
+  ngOnChanges(): void {
+    console.log('Current card is:', this.card);
+    console.log('Current number is:', this.card?.split('_')[1]);
+    if (this.card) {
+      let cardNumber: number | undefined = +this.card?.split('_')[1];
+      this.title = this.cardAction[cardNumber - 1].title;
+      this.description = this.cardAction[cardNumber - 1].description;
+    }
+  }
+
 
 
 }

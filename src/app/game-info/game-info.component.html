@@ -1,12 +1,11 @@
 <mat-card class="card" appearance="outlined">
-  <mat-card-title>Titel</mat-card-title>
+  <mat-card-title>{{card ? title :'Please pick a card'}}</mat-card-title>
 
 
 
 
 
   <mat-card-content class="text">
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui tenetur laborum, nam sunt dolorem eum veniam
-    voluptatum eveniet ea mollitia iure! Neque nisi tempora harum incidunt sit eos nemo in.
+    {{card ? description : 'Please click on the card stack to select the next card.'}}
   </mat-card-content>
 </mat-card>

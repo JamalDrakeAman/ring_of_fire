@@ -62,6 +62,8 @@ export class GameComponent implements OnInit {
       console.log('New Card', this.currentCard);
       console.log('game is', this.game);
 
+      this.game.currentPlayer++;
+      this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       setTimeout(() => {
         if (this.currentCard != undefined) {
           this.game.playedCards.push(this.currentCard);
