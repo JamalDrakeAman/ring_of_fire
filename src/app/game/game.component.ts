@@ -14,6 +14,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 
+import { Firestore, collectionData, collection, doc, onSnapshot, addDoc } from '@angular/fire/firestore';
+import { inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -41,26 +44,90 @@ export class GameComponent implements OnInit {
   currentCard: string | undefined = '';
   game: Game = new Game;
 
-  constructor(public dialog: MatDialog) { }
+
+  // items$;
+  // items;
+
+  unsubList:any;
+  // unsubSingle;
+  private firestore: Firestore = inject(Firestore);
+
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
+
+    // // collection variante daten zu halen  / hier wäre zwischen drin noch das Observable möglich 
+    // this.items$ = collectionData(this.getGameRef());
+    // this.items = this.items$.subscribe((list) => {
+    //   list.forEach(element => {
+    //     console.log(element);
+    //   });
+    // })
+
+    
+    // this.unsubList = onSnapshot(this.getGameRef(), (list) => {
+    //   list.forEach(element => {
+    //     console.log(element.data());
+
+    //   });
+    // });
+
+
+    // this.unsubSingle = onSnapshot(this.getsingleDocRef("game", "6z0Q1nuhDWOsFtWvFGew"), (element) => {
+    //   console.log(element);
+    // });
+
+  }
 
 
   ngOnInit(): void {
-    this.newGame();
+    //this.newGame();
+    this.route.params.subscribe((params) => {
+
+      console.log(params['id']);
+      let id = params['id'];
+
+      this.unsubList = onSnapshot(this.getGameIdRef(id), (list) => {
+        list.forEach(element => {
+          console.log(element.data());
+  
+        });
+      });
+    })
+
+  }
+
+  getGameIdRef(id:string) {
+    return collection(this.firestore, `games/${id}/`);
+  }
+
+  getGameRef() {
+    return collection(this.firestore, 'games');
+  }
+
+  ngOnDestroy() {
+    // this.items.unsubscribe();
+    // this.unsubSingle();
+    this.unsubList();
   }
 
 
-  newGame() {
+  async newGame() {
     this.game = new Game();
-    console.log(this.game);
+
+    await addDoc(this.getGameRef(), this.game.toJson()).catch(
+      (err) => { console.error(err) }
+    ).then(
+      (docRef) => { console.log("Document written with ID: ", docRef?.id) }
+    )
   }
+
 
 
   takeCard() {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimation = true;
-      console.log('New Card', this.currentCard);
-      console.log('game is', this.game);
+      // console.log('New Card', this.currentCard);
+      // console.log('game is', this.game);
 
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
