@@ -6,6 +6,9 @@ export class Game {
     public playedCards: string[] = [];
     public currentPlayer: number = 0;
 
+    public pickCardAnimation = false;
+    public currentCard: string | undefined = '';
+
     constructor() { // Hier werden die karten von jeder art in das array gepusht
         for (let i = 1; i < 14; i++) {
             this.stack.push('spade_' + i);
@@ -19,13 +22,14 @@ export class Game {
 
 
     public toJson() {
-        console.log('this.currentPlayer',this.currentPlayer);
-        
+        console.log('this.currentPlayer', this.currentPlayer);
         return {
             players: this.players,
             stack: this.stack,
             playCards: this.playedCards,
-            currentPlayer: this.currentPlayer
+            currentPlayer: this.currentPlayer,
+            pickCardAnimation: this.pickCardAnimation,
+            currentCard: this.currentCard
         }
     }
 
