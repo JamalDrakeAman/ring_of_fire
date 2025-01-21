@@ -125,15 +125,15 @@ export class GameComponent implements OnInit {
   }
 
 
-  async newGame() {
-    this.game = new Game();
+  // async newGame() {
+  //   this.game = new Game();
 
-    await addDoc(this.getGameRef(), this.game.toJson()).catch(
-      (err) => { console.error(err) }
-    ).then(
-      (docRef) => { console.log("Document written with ID: ", docRef?.id) }
-    )
-  }
+  //   await addDoc(this.getGameRef(), this.game.toJson()).catch(
+  //     (err) => { console.error(err) }
+  //   ).then(
+  //     (docRef) => { console.log("Document written with ID: ", docRef?.id) }
+  //   )
+  // }
 
 
   // async updateGame(){
