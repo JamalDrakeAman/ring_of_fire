@@ -48,12 +48,12 @@ export class GameComponent implements OnInit {
   // items$;
   // items;
 
-  unsubList:any;
-  // unsubSingle;
+  unsubList;
+  unsubSingle: any;
+
   private firestore: Firestore = inject(Firestore);
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {
-
     // // collection variante daten zu halen  / hier wäre zwischen drin noch das Observable möglich 
     // this.items$ = collectionData(this.getGameRef());
     // this.items = this.items$.subscribe((list) => {
@@ -62,50 +62,62 @@ export class GameComponent implements OnInit {
     //   });
     // })
 
-    
-    // this.unsubList = onSnapshot(this.getGameRef(), (list) => {
-    //   list.forEach(element => {
-    //     console.log(element.data());
+    this.unsubList = onSnapshot(this.getGameRef(), (list) => {
+      list.forEach(element => {
+        console.log(element.data());
 
-    //   });
-    // });
-
+      });
+    });
 
     // this.unsubSingle = onSnapshot(this.getsingleDocRef("game", "6z0Q1nuhDWOsFtWvFGew"), (element) => {
     //   console.log(element);
     // });
-
   }
 
 
   ngOnInit(): void {
-    //this.newGame();
+    // this.newGame();
     this.route.params.subscribe((params) => {
-
       console.log(params['id']);
       let id = params['id'];
 
-      this.unsubList = onSnapshot(this.getGameIdRef(id), (list) => {
+
+      this.unsubList = onSnapshot(this.getGameRef(), (list) => {
         list.forEach(element => {
-          console.log(element.data());
-  
+
+          console.log('Game Update', element.data());
+          let data = element.data();
+          this.game.currentPlayer = data['currentPlayer'];
+          this.game.playedCards = data['playedCards']
+          this.game.players = data['players'];
+          this.game.stack = data['stack'];
         });
       });
+
+      // this.unsubSingle = onSnapshot(this.getsingleDocRef("game", id), (element) => {
+      //   console.log('Game Update', element.data());
+      //   this.game.currentPlayer = element.currentPlayer;
+      //   this.game.playedCards = element.currentPlayer;
+      //   this.game.players = element.currentPlayer;
+      //   this.game.stack = element.stack;
+      // });
+
     })
-
   }
 
-  getGameIdRef(id:string) {
-    return collection(this.firestore, `games/${id}/`);
-  }
 
   getGameRef() {
     return collection(this.firestore, 'games');
   }
 
+  getsingleDocRef(colId: string, docId: string) {
+    return doc(collection(this.firestore, colId), docId);
+  }
+
+
   ngOnDestroy() {
     // this.items.unsubscribe();
-    // this.unsubSingle();
+    this.unsubSingle();
     this.unsubList();
   }
 
