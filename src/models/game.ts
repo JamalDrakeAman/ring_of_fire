@@ -19,6 +19,8 @@ export class Game {
 
 
     public toJson() {
+        console.log('this.currentPlayer',this.currentPlayer);
+        
         return {
             players: this.players,
             stack: this.stack,

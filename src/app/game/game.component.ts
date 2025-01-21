@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 
-import { Firestore, collectionData, collection, doc, onSnapshot, addDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, doc, onSnapshot, addDoc, updateDoc, setDoc } from '@angular/fire/firestore';
 import { inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -44,6 +44,7 @@ export class GameComponent implements OnInit {
   currentCard: string | undefined = '';
   game: Game = new Game;
 
+  gameID = '';
 
   // items$;
   // items;
@@ -79,7 +80,9 @@ export class GameComponent implements OnInit {
     // this.newGame();
     this.route.params.subscribe((params) => {
       console.log(params['id']);
-      let id = params['id'];
+      this.gameID = params['id'];
+      // console.log('ID',id);
+
 
 
       this.unsubList = onSnapshot(this.getGameRef(), (list) => {
@@ -88,7 +91,7 @@ export class GameComponent implements OnInit {
           console.log('Game Update', element.data());
           let data = element.data();
           this.game.currentPlayer = data['currentPlayer'];
-          this.game.playedCards = data['playedCards']
+          this.game.playedCards = data['playCards'];
           this.game.players = data['players'];
           this.game.stack = data['stack'];
         });
@@ -133,6 +136,30 @@ export class GameComponent implements OnInit {
   }
 
 
+  // async updateGame(){
+  //   await setDoc(this.getsingleDocRef(),{
+  //   })
+  // }
+
+
+  async updateGame() {
+    const documentRef = doc(this.firestore, `games/${this.gameID}`);
+    console.log(this.gameID);
+    const newDocumentData = {
+      'currentPlayer': this.game.currentPlayer,
+      'playCards': this.game.playedCards,
+      'players': this.game.players,
+      'stack': this.game.stack
+    };
+    try {
+      await setDoc(documentRef, newDocumentData, { merge: false });
+      console.log('Document successfully replaced!');
+      console.log(newDocumentData);
+    } catch (error) {
+      console.error('Error replacing document: ', error);
+    }
+  }
+
 
   takeCard() {
     if (!this.pickCardAnimation) {
@@ -140,7 +167,6 @@ export class GameComponent implements OnInit {
       this.pickCardAnimation = true;
       // console.log('New Card', this.currentCard);
       // console.log('game is', this.game);
-
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       setTimeout(() => {
@@ -149,18 +175,20 @@ export class GameComponent implements OnInit {
         }
         this.pickCardAnimation = false;
       }, 1000);
+      this.updateGame();
     }
   }
 
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
-
     dialogRef.afterClosed().subscribe((name: string) => {
       console.log('The dialog was closed');
       if (name) {
         this.game.players.push(name);
+        this.updateGame();
       }
+
     });
   }
 
