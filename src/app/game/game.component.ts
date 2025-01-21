@@ -85,7 +85,7 @@ export class GameComponent implements OnInit {
 
 
 
-      this.unsubList = onSnapshot(this.getGameRef(), (list) => {
+      this.unsubList = onSnapshot(collection(this.firestore, `games/${this.gameID}`), (list) => {
         list.forEach(element => {
 
           console.log('Game Update', element.data());
