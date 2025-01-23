@@ -24,7 +24,7 @@ export class StartScreenComponent {
     ).then(
       (gameInfo: any) => {
         console.log(gameInfo);
-        this.router.navigateByUrl('/game/ ' + gameInfo.id)
+        this.router.navigateByUrl('/game/' + gameInfo.id)
       }
     )
   }

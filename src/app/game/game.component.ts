@@ -40,14 +40,14 @@ import { ActivatedRoute } from '@angular/router';
 
 
 export class GameComponent implements OnInit {
- 
+
   game: Game = new Game;
 
   gameID: string = '';
 
 
   unsubList;
-  unsubSingle: any;
+  // unsubSingle: any;
 
   private firestore: Firestore = inject(Firestore);
 
@@ -55,7 +55,18 @@ export class GameComponent implements OnInit {
 
     this.unsubList = onSnapshot(this.getGameRef(), (list) => {
       list.forEach(element => {
-        console.log(element.data());
+        if(element.id == this.gameID){
+
+
+          console.log('Game Update', element.data());
+          let data = element.data();
+          this.game.currentPlayer = data['currentPlayer'];
+          this.game.playedCards = data['playCards'];
+          this.game.players = data['players'];
+          this.game.stack = data['stack'];
+          this.game.pickCardAnimation = data['pickCardAnimation'];
+          this.game.currentCard = data['currentCard'];
+        }
 
       });
     });
@@ -68,20 +79,15 @@ export class GameComponent implements OnInit {
     this.route.params.subscribe((params) => {
       console.log(params['id']);
       this.gameID = params['id'];
+      console.log('ID', this.gameID);
 
-      this.unsubList = onSnapshot(collection(this.firestore, `games/${this.gameID}`), (list) => {
-        list.forEach(element => {
 
-          console.log('Game Update', element.data());
-          let data = element.data();
-          this.game.currentPlayer = data['currentPlayer'];
-          this.game.playedCards = data['playCards'];
-          this.game.players = data['players'];
-          this.game.stack = data['stack'];
-          this.game.pickCardAnimation = data['pickCardAnimation'];
-          this.game.currentCard = data['currentCard'];
-        });
-      });
+      // this.unsubList = onSnapshot(collection(this.firestore, `${this.gameID}`), (list) => {
+      //   list.forEach(element => {
+
+    
+      //   });
+      // });
 
     })
   }
@@ -98,7 +104,7 @@ export class GameComponent implements OnInit {
 
   ngOnDestroy() {
     // this.items.unsubscribe();
-    this.unsubSingle();
+    // this.unsubSingle();
     this.unsubList();
   }
 
